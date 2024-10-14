@@ -8,11 +8,45 @@ public class App {
     public static void main(String[] args) {
         
         try {
+
+            //Punto 1
+            /* 
+            String resultado = encontrarNumero();
+            System.out.println(resultado);
+            */
+
+            /* 
+            //Punto 2
+            System.out.println(Simular_ventas());
+            */
+
+
+            /* 
+            //Punto 3
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Ingrese la cantidad de bombillas a empacar:");
+            int bombillas = scanner.nextInt();
+
+            String resultado = Calcular_empaque(bombillas);
+            System.out.println(resultado);
+
+            scanner.close();
+            */
+
+
+            /* 
+            //Punto 4
+            Scanner teclado = new Scanner(System.in);
+            System.out.print("Ingrese la cantidad de jugadores: ");
+            byte cant_jugadores = teclado.nextByte();
+            System.out.println(jugar_21(cant_jugadores, teclado));
+            */
             
         } 
         
         catch (Exception e) {
-            // TODO: handle exception
+            System.out.println("Ocurrio un error");
         }
     }
 
@@ -26,9 +60,40 @@ public class App {
     
     */ 
 
+    public static String encontrarNumero() {
 
+        try {
 
+        Scanner entrada = new Scanner(System.in);
 
+        System.out.println("Ingrese un número entero entre 1000 y 9999:");
+        int numero = entrada.nextInt();
+        int intentos = 0;
+
+        if (numero >= 1000 && numero <= 9999) {
+            // Ciclo que genera números aleatorios y cuenta los intentos
+            for (int i = 0; i < 1; i++) {  // Ciclo externo para cumplir con el for anidado
+                for (;;) {  // Ciclo infinito hasta encontrar el número
+                    intentos++;
+                    int numeroAleatorio = (int)(Math.random() * 9000) + 1000;  // Genera un número entre 1000 y 9999
+                    if (numeroAleatorio == numero) {
+                        break;  // Sale del ciclo si encuentra el número
+                    }
+                }
+            }
+            return "Número encontrado en " + intentos + " intentos.";
+        } else {
+            return "Número fuera de rango. Por favor ingrese un número entre 1000 y 9999.";
+        }
+            
+        } 
+        
+        catch (Exception e) {
+            return "Ocurrio un error";
+        }
+
+    }
+    
     /* 
      
         2.	Se requiere una función en java que simule las ventas de tres años para un almacén. Para cada año, deberá generar 
@@ -62,9 +127,36 @@ public class App {
       
     */
 
-    
+    public static String Simular_ventas(){
+
+        try {
+            String txt_retornar = "";
+            int ventas_mes = 0, ventas_total_ano = 0;
+            final byte mesesF = 12, anosF = 3, k_cero =0;
+            DecimalFormat form_pesos = new DecimalFormat("$#,###.00");
+
+            for (int i=1; i <= anosF; i++){
+                txt_retornar += "Año " + i + "\n";
+                for(int j=1; j <= mesesF; j++){
+                    ventas_mes = (int) (Math.random()*10000000);
+                    ventas_total_ano += ventas_mes;
+                    txt_retornar += "Ventas Mes " + j + ": " + form_pesos.format(ventas_mes) + "\n";    
+                }
+                txt_retornar += "Total ventas Año " + i + ": " + form_pesos.format(ventas_total_ano) + "\n" + "\n";
+                ventas_total_ano = k_cero;
+            }
+
+            return txt_retornar;          
+        } 
+        
+  
+        
+        catch (Exception e) {
+            return "Ocurrio un error";
+        }
 
 
+    }
 
     /*  
      
@@ -86,9 +178,50 @@ public class App {
 
     */
 
+    public static String Calcular_empaque(int bombillas){
 
+        try {
 
-    
+            int bombillasPorCaja = 30;
+            int cajasPorPallet = 16;
+
+            int cajasNecesarias = bombillas / bombillasPorCaja;
+            int palletsNecesarios = cajasNecesarias / cajasPorPallet;
+            int cajasRestantes = cajasNecesarias % cajasPorPallet;
+            int bombillasSinEmpacar = bombillas % bombillasPorCaja;
+
+            if (cajasRestantes > 0) {
+                palletsNecesarios++;
+            }
+
+            String resultado = "Para " + bombillas + " bombillas, se necesitan "
+                    + cajasNecesarias + " cajas y " + palletsNecesarios
+                    + " pallets. Se quedan " + bombillasSinEmpacar + " bombillas sin empacar.\n"
+                    + "Se empacará así:\n";
+
+            int cajaActual = 1;
+            for (int pallet = 1; pallet <= palletsNecesarios; pallet++) {
+                resultado += "Pallet " + pallet + " --> ";
+                for (int i = 0; i < cajasPorPallet; i++) {
+                    if (cajaActual > cajasNecesarias) break;  // Evita cajas extras si ya se empacaron todas
+                    resultado += "Caja" + cajaActual;
+                    if (i < cajasPorPallet - 1 && cajaActual < cajasNecesarias) {
+                        resultado += ", ";
+                    }
+                    cajaActual++;
+                }
+                resultado += "\n";
+            }
+
+            return resultado;
+            
+        } 
+        
+        catch (Exception e) {
+            return "Ocurrio un error";
+        }
+
+    }
 
     /* 
     
@@ -112,6 +245,48 @@ public class App {
 
     */
 
+    public static String jugar_21(byte cant_jugadores, Scanner teclado) {
 
+        try {
+            
+            String txt_retornar = ""; 
+            int cartas = 0, puntosF = 0;  
+            final byte min = 1, max = 10, k_cero = 0,
+            min_j = 1, max_j = 6, intent_x_j = 3; 
+ 
+
+            while (cant_jugadores < min_j || cant_jugadores > max_j) {
+                System.out.print("La cantidad de jugadores debe estar entre 1 y 6, Ingrese nuevamente la cantidad de jugadores: ");
+                cant_jugadores = teclado.nextByte();
+            }
+
+            for(byte i=1; i <= cant_jugadores; i++){
+
+                for(short j=1; j <= intent_x_j; j++){
+                    cartas = (int) (Math.random() * (max - min)) + min;
+                    puntosF += cartas;
+                }
+
+                if(puntosF < 21){
+                    txt_retornar += "Jugador " + i + ", " + "Puntos: " + puntosF + " -- > Faltaron puntos" + "\n";
+                } else if (puntosF == 21) {
+                    txt_retornar += "Jugador " + i + ", " + "Puntos: " + puntosF + " -- > Juego perfecto" + "\n";
+                } else 
+                    txt_retornar += "Jugador " + i + ", " + "Puntos: " + puntosF + " -- > Se pasó" + "\n";
+
+            puntosF = k_cero;
+
+            }
+
+            return txt_retornar; 
+
+        } 
+        
+        
+        catch (Exception e) {
+            return "Ocurrio un error";
+        }
+
+    }
 
 }
